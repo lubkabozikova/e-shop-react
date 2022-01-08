@@ -1,18 +1,18 @@
 import CartContext from "./store/cart-context";
 import Header from "./components/header/Header";
-import Meals from "./components/meals/Meals";
+import MealsList from "./components/meals/Meals";
 import Cart from "./components/cart/Cart";
 
-import "./App.css";
+import styles from "./App.module.css";
 import { useContext } from "react";
 
 function App() {
   const cart = useContext(CartContext);
 
   return (
-    <div className="App">
+    <div className={styles.App}>
       <Header />
-      <Meals />
+      <MealsList />
       {cart.open && <Cart />}
     </div>
   );

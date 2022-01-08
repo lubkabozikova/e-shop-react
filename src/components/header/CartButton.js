@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import "./CartButton.css";
+import styles from "./CartButton.module.css";
 import CartIcon from "./CartIcon";
 import CartContext from "../../store/cart-context";
 
@@ -8,12 +8,12 @@ function CartButton() {
   const cart = useContext(CartContext);
 
   return (
-    <button className="header-button" onClick={cart.openHandler}>
-      <div className="icon">
+    <button className={styles.button} onClick={cart.openHandler}>
+      <div className={styles.icon}>
         <CartIcon />
       </div>
       Your Cart
-      <div className="badge">{cart.count}</div>
+      <div className={styles.badge}>{cart.count}</div>
     </button>
   );
 }

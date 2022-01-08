@@ -1,8 +1,8 @@
-import "./DelitiousFood.css";
+import styles from "./DelitiousFood.module.css";
 
 const MealsSummary = () => {
   return (
-    <div className="summary">
+    <div className={styles.summary}>
       <h2>Delicious Food, Delivered To You</h2>
       <p>
         Choose your favorite meal from our broad selection of available meals

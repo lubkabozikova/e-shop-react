@@ -1,31 +1,74 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useReducer } from "react";
+import meals from "../components/dummy_meals";
 
 const CartContext = createContext({
   open: false,
   count: 0,
   openHandler: () => {},
   closeHandler: () => {},
+  addHandler: () => {},
+  removeHandler: () => {},
 });
+////////////////////////////////////////////////////////////////////////////
+
+const initOrder = { name: {}, price: {}, amount: {} };
+meals.forEach((meal) => {
+  initOrder.name[meal.id] = meal.name;
+  initOrder.price[meal.id] = meal.price;
+  initOrder.amount[meal.id] = 0;
+});
+console.log(initOrder);
+const orderReducer = (state, action) => {
+  if (action.type === "ADD")
+    return {
+      ...state,
+      amount: {
+        ...state.amount,
+        [action.id]: +state.amount[action.id] + +action.amount,
+      },
+    };
+  if (action.type === "REMOVE")
+    return {
+      ...state,
+      amount: {
+        ...state.amount,
+        [action.id]: +state.amount[action.id] - +action.amount,
+      },
+    };
+};
 
 function CartContextProvider(props) {
-  let [cartOpen, setCartOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [count, setCount] = useState(0);
+  const [order, dispatchOrder] = useReducer(orderReducer, initOrder);
 
-  let openCart = () => {
+  const openCart = () => {
     setCartOpen(true);
-    console.log("cart open");
   };
-  let closeCart = () => {
+  const closeCart = () => {
     setCartOpen(false);
-    console.log("cart closed");
+  };
+
+  const addToCart = (id, amount) => {
+    dispatchOrder({ type: "ADD", id: id, amount: amount });
+    setCount((prevCount) => +prevCount + +amount);
+  };
+
+  const removeFromCart = (id, amount) => {
+    dispatchOrder({ type: "REMOVE", id: id, amount: amount });
+    setCount((prevCount) => +prevCount - +amount);
   };
 
   return (
     <CartContext.Provider
       value={{
         open: cartOpen,
-        count: 0,
+        count: count,
+        order: order,
         openHandler: openCart,
         closeHandler: closeCart,
+        addHandler: addToCart,
+        removeHandler: removeFromCart,
       }}
     >
       {props.children}
