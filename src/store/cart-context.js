@@ -9,6 +9,7 @@ const CartContext = createContext({
   addHandler: () => {},
   removeHandler: () => {},
 });
+
 ////////////////////////////////////////////////////////////////////////////
 
 const initOrder = { name: {}, price: {}, amount: {} };
@@ -17,7 +18,6 @@ meals.forEach((meal) => {
   initOrder.price[meal.id] = meal.price;
   initOrder.amount[meal.id] = 0;
 });
-console.log(initOrder);
 const orderReducer = (state, action) => {
   if (action.type === "ADD")
     return {

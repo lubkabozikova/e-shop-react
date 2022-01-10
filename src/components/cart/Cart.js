@@ -8,8 +8,6 @@ import CartItem from "./CartItem";
 function Cart() {
   const cart = useContext(CartContext);
   const order = cart.order;
-  console.log(order);
-
   const keys = Object.keys(order.price);
 
   let total = 0;
@@ -25,6 +23,12 @@ function Cart() {
           name={order.name[id]}
           price={order.price[id]}
           amount={order.amount[id]}
+          onRemove={() => {
+            cart.removeHandler(id, 1);
+          }}
+          onAdd={() => {
+            cart.addHandler(id, 1);
+          }}
         ></CartItem>
       );
     }
@@ -34,14 +38,14 @@ function Cart() {
     <Fragment>
       <div className={modalStyles.backdrop}></div>
       <div className={modalStyles.modal}>
-        <ul className={styles.cartItems}>{keys.map((key) => listItem(key))}</ul>
+        <ul className={styles.cartItems}>{keys.map((id) => listItem(id))}</ul>
         <div className={styles.total}>
           <span>Total Amount</span>
           <span>${total.toFixed(2)}</span>
         </div>
         <div className={styles.actions}>
           <button onClick={cart.closeHandler}>Close</button>
-          <button className={styles.order}>Order</button>
+          {cart.count > 0 && <button className={styles.order}>Order</button>}
         </div>
       </div>
     </Fragment>
