@@ -5,7 +5,7 @@ import styles from "./Cart.module.css";
 import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
 
-function Cart() {
+function Cart(props) {
   const cart = useContext(CartContext);
   const order = cart.order;
   const keys = Object.keys(order.price);
@@ -44,7 +44,7 @@ function Cart() {
           <span>${total.toFixed(2)}</span>
         </div>
         <div className={styles.actions}>
-          <button onClick={cart.closeHandler}>Close</button>
+          <button onClick={props.onCartClose}>Close</button>
           {cart.count > 0 && <button className={styles.order}>Order</button>}
         </div>
       </div>

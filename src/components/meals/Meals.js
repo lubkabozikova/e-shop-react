@@ -1,25 +1,38 @@
+import { useContext } from "react";
+
 import classes from "./Meals.module.css";
-import meals from "../dummy_meals";
+import CartContext from "../../store/cart-context";
 import MealItem from "./MealItem";
 
 function MealsList() {
-  const listMeal = (meal) => {
+  const cart = useContext(CartContext);
+
+  const listMeal = (id, name, description, price) => {
     return (
       <MealItem
-        key={meal.id}
-        id={meal.id}
-        name={meal.name}
-        description={meal.description}
-        price={meal.price}
+        key={id}
+        id={id}
+        name={name}
+        description={description}
+        price={price}
       >
-        {meal.name}
+        {name}
       </MealItem>
     );
   };
 
   return (
     <div className={classes.meals}>
-      <ul>{meals.map((meal) => listMeal(meal))}</ul>
+      <ul>
+        {cart.meals.id.map((id) =>
+          listMeal(
+            id,
+            cart.meals.name[id],
+            cart.meals.description[id],
+            cart.meals.price[id]
+          )
+        )}
+      </ul>
     </div>
   );
 }

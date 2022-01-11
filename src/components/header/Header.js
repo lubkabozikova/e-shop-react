@@ -3,12 +3,12 @@ import MealsImage from "./meals.jpg";
 import DelitiousFood from "./DelitiousFood";
 import CartButton from "./CartButton.js";
 
-function Header() {
+function Header(props) {
   return (
     <div>
       <div className={styles.header}>
         <h1>ReactMeals</h1>
-        <CartButton></CartButton>
+        <CartButton onClick={props.onCartOpen}></CartButton>
       </div>
       <div className={styles.mainImage}>
         <img src={MealsImage} alt="" />

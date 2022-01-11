@@ -4,31 +4,29 @@ import styles from "./CartButton.module.css";
 import CartIcon from "./CartIcon";
 import CartContext from "../../store/cart-context";
 
-function CartButton() {
+function CartButton(props) {
   const cart = useContext(CartContext);
   const [buttonBumping, setButtonBumping] = useState(false);
 
-  // const btnStyles = `${styles.button} ${styles.bump}`
   const { count } = cart;
   useEffect(() => {
     if (count === 0) return;
     setButtonBumping(true);
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setButtonBumping(false);
     }, 300);
-    return () => clearTimeout(timer);
   }, [count]);
 
   return (
     <button
       className={`${styles.button} ${buttonBumping && styles.bump}`}
-      onClick={cart.openHandler}
+      onClick={props.onClick}
     >
       <div className={styles.icon}>
         <CartIcon />
       </div>
       Your Cart
-      <div className={styles.badge}>{cart.count}</div>
+      <div className={styles.badge}>{count}</div>
     </button>
   );
 }

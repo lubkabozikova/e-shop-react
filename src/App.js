@@ -1,19 +1,23 @@
-import CartContext from "./store/cart-context";
+import { useState } from "react";
+
 import Header from "./components/header/Header";
 import MealsList from "./components/meals/Meals";
 import Cart from "./components/cart/Cart";
-
 import styles from "./App.module.css";
-import { useContext } from "react";
 
 function App() {
-  const cart = useContext(CartContext);
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const toggleCart = () =>
+    setCartOpen((prevCartOpen) => {
+      return !prevCartOpen;
+    });
 
   return (
     <div className={styles.App}>
-      <Header />
+      <Header onCartOpen={toggleCart} />
       <MealsList />
-      {cart.open && <Cart />}
+      {cartOpen && <Cart onCartClose={toggleCart} />}
     </div>
   );
 }
