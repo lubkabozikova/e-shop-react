@@ -7,31 +7,30 @@ import CartItem from "./CartItem";
 
 function Cart(props) {
   const cart = useContext(CartContext);
+  const meals = cart.meals;
   const order = cart.order;
-  const keys = Object.keys(order.price);
+  const keys = Object.keys(order);
 
   let total = 0;
-  for (const key of keys) {
-    total = +total + +order.price[key] * +order.amount[key];
+  for (const id of keys) {
+    total = +total + +meals.price[id] * +order[id];
   }
 
   const listItem = (id) => {
-    if (order.amount[id] > 0) {
-      return (
-        <CartItem
-          key={id}
-          name={order.name[id]}
-          price={order.price[id]}
-          amount={order.amount[id]}
-          onRemove={() => {
-            cart.removeHandler(id, 1);
-          }}
-          onAdd={() => {
-            cart.addHandler(id, 1);
-          }}
-        ></CartItem>
-      );
-    }
+    return (
+      <CartItem
+        key={id}
+        name={meals.name[id]}
+        price={meals.price[id]}
+        amount={order[id]}
+        onRemove={() => {
+          cart.removeHandler(id, 1);
+        }}
+        onAdd={() => {
+          cart.addHandler(id, 1);
+        }}
+      ></CartItem>
+    );
   };
 
   return (

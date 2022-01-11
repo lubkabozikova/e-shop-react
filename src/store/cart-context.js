@@ -1,12 +1,14 @@
 import { createContext } from "react";
 import meals from "../components/dummy_meals";
 
-const initOrder = { name: {}, price: {}, amount: {} };
-meals.forEach((meal) => {
-  initOrder.name[meal.id] = meal.name;
-  initOrder.price[meal.id] = meal.price;
-  initOrder.amount[meal.id] = 0;
-});
+// const initOrder = { name: {}, price: {}, amount: {} };
+// meals.forEach((meal) => {
+//   initOrder.name[meal.id] = meal.name;
+//   initOrder.price[meal.id] = meal.price;
+//   initOrder.amount[meal.id] = 0;
+// });
+
+const initOrder = {};
 
 const allMeals = { id: [], name: {}, description: {}, price: {} };
 meals.forEach((meal) => {

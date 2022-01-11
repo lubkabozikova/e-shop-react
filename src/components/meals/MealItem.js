@@ -11,7 +11,7 @@ function MealItem(props) {
 
   const addHandler = (event) => {
     event.preventDefault();
-    cart.mealsAddHandler(props.id, amount.current.value);
+    cart.addHandler(props.id, amount.current.value);
     document.getElementById("form").reset();
   };
 
