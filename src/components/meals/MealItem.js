@@ -12,7 +12,7 @@ function MealItem(props) {
   const addHandler = (event) => {
     event.preventDefault();
     cart.addHandler(props.id, amount.current.value);
-    document.getElementById("form").reset();
+    document.getElementById("form" + props.id).reset();
   };
 
   return (
@@ -23,7 +23,7 @@ function MealItem(props) {
           <p className={styles.description}>{props.description}</p>
           <p className={styles.price}>${props.price.toFixed(2)}</p>
         </div>
-        <form id="form" className={formStyles.form}>
+        <form id={`form${props.id}`} className={formStyles.form}>
           <div className={formStyles.input}>
             <label htmlFor="amount">Amount</label>
             <input

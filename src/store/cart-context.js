@@ -25,6 +25,7 @@ const CartContext = createContext({
   addHandler: () => {},
   removeHandler: () => {},
   mealsAddHandler: () => {},
+  clearCartHandler: () => {},
 });
 
 export default CartContext;

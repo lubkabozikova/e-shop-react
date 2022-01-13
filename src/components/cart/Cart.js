@@ -16,6 +16,11 @@ function Cart(props) {
     total = +total + +meals.price[id] * +order[id];
   }
 
+  const orderHandler = () => {
+    cart.clearCartHandler();
+    props.onCartClose();
+  };
+
   const listItem = (id) => {
     return (
       <CartItem
@@ -44,7 +49,11 @@ function Cart(props) {
         </div>
         <div className={styles.actions}>
           <button onClick={props.onCartClose}>Close</button>
-          {cart.count > 0 && <button className={styles.order}>Order</button>}
+          {cart.count > 0 && (
+            <button className={styles.order} onClick={orderHandler}>
+              Order
+            </button>
+          )}
         </div>
       </div>
     </Fragment>

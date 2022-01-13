@@ -3,17 +3,32 @@ import CartContext from "./cart-context";
 
 const addingTable = { ADD: 1, REMOVE: -1 };
 const orderReducer = (state, action) => {
-  if (!state.hasOwnProperty(action.id)) {
+  // adding something that is not there yet
+  if (action.type === "ADD" && !state.hasOwnProperty(action.id)) {
+    localStorage.setItem(action.id, action.amount);
     return { ...state, [action.id]: +action.amount };
   }
-  if (state[action.id] === 1 && action.type === "REMOVE") {
+  // removing the last of one kind
+  if (action.type === "REMOVE" && state[action.id] === 1) {
     delete state[action.id];
+    localStorage.removeItem(action.id);
     return state;
   }
-  return {
-    ...state,
-    [action.id]: +state[action.id] + +addingTable[action.type] * +action.amount,
-  };
+  // clearing the entire order
+  if (action.type === "CLEAR") {
+    localStorage.clear();
+    return {};
+  }
+  // adding to existing or removing so that there is still some left
+  else {
+    const amount =
+      +state[action.id] + +addingTable[action.type] * +action.amount;
+    localStorage.setItem(action.id, amount);
+    return {
+      ...state,
+      [action.id]: amount,
+    };
+  }
 };
 
 function CartContextProvider(props) {
@@ -31,6 +46,11 @@ function CartContextProvider(props) {
     setCount((prevCount) => +prevCount - +amount);
   };
 
+  const clearCart = () => {
+    setCount(0);
+    dispatchOrder({ type: "CLEAR" });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -39,6 +59,7 @@ function CartContextProvider(props) {
         meals: initCart.meals,
         addHandler: addToCart,
         removeHandler: removeFromCart,
+        clearCartHandler: clearCart,
       }}
     >
       {props.children}
