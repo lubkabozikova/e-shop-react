@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./App";
 
 import CartContextProvider from "./store/CartContextProvider";
+import BackendContextProvider from "./communicationWithBackend/BackendContextProvider-alt";
 
 ReactDOM.render(
   <React.StrictMode>
     <CartContextProvider>
-      <App />
+      <BackendContextProvider>
+        <App />
+      </BackendContextProvider>
     </CartContextProvider>
   </React.StrictMode>,
   document.getElementById("root")

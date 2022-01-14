@@ -3,6 +3,7 @@ import { useContext, useRef } from "react";
 import styles from "./MealItem.module.css";
 import formStyles from "./MealItemForm.module.css";
 import CartContext from "../../store/cart-context";
+import Button from "../../UI/Button";
 
 function MealItem(props) {
   const cart = useContext(CartContext);
@@ -15,6 +16,10 @@ function MealItem(props) {
     document.getElementById("form" + props.id).reset();
   };
 
+  const removeHandler = () => {
+    props.onRemove(props.id);
+  };
+
   return (
     <li id={props.id}>
       <div className={styles.meal}>
@@ -23,20 +28,27 @@ function MealItem(props) {
           <p className={styles.description}>{props.description}</p>
           <p className={styles.price}>${props.price.toFixed(2)}</p>
         </div>
-        <form id={`form${props.id}`} className={formStyles.form}>
-          <div className={formStyles.input}>
-            <label htmlFor="amount">Amount</label>
-            <input
-              id="input"
-              type="number"
-              min="1"
-              step="1"
-              defaultValue="1"
-              ref={amount}
-            ></input>
-          </div>
-          <button onClick={addHandler}>+Add</button>
-        </form>
+        {!props.loggedIn && (
+          <form id={`form${props.id}`} className={formStyles.form}>
+            <div className={formStyles.input}>
+              <label htmlFor="amount">Amount</label>
+              <input
+                id={`input${props.id}`}
+                type="number"
+                min="1"
+                step="1"
+                defaultValue="1"
+                ref={amount}
+              ></input>
+            </div>
+            <button onClick={addHandler}>+Add</button>
+          </form>
+        )}
+        {props.loggedIn && (
+          <Button className={styles.button} onClick={removeHandler}>
+            Remove
+          </Button>
+        )}
       </div>
     </li>
   );

@@ -1,20 +1,38 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 
 import classes from "./Meals.module.css";
-import CartContext from "../../store/cart-context";
+import BackendContext from "../../communicationWithBackend/backend-context";
 import MealItem from "./MealItem";
 
-function MealsList() {
-  const cart = useContext(CartContext);
+function MealsList(props) {
+  const backend = useContext(BackendContext);
+  const [loaded, setLoaded] = useState(false);
+  const [meals, setMeals] = useState({});
 
-  const listMeal = (id, name, description, price) => {
+  const loadMeals = useCallback(() => {
+    const load = async () => {
+      const loadedMeals = await backend.getMeals();
+      setMeals(loadedMeals);
+      setLoaded(true);
+    };
+    load();
+  }, [backend]);
+  useEffect(() => loadMeals(), [loadMeals, backend]);
+
+  const removeMealHandler = (id) => {
+    backend.removeMeal(id);
+  };
+
+  const listMeal = (id, name, price, description) => {
     return (
       <MealItem
         key={id}
         id={id}
         name={name}
-        description={description}
         price={price}
+        description={description}
+        loggedIn={props.loggedIn}
+        onRemove={removeMealHandler}
       >
         {name}
       </MealItem>
@@ -23,16 +41,18 @@ function MealsList() {
 
   return (
     <div className={classes.meals}>
-      <ul>
-        {cart.meals.id.map((id) =>
-          listMeal(
-            id,
-            cart.meals.name[id],
-            cart.meals.description[id],
-            cart.meals.price[id]
-          )
-        )}
-      </ul>
+      {loaded && (
+        <ul>
+          {Object.keys(meals).map((id) => {
+            return listMeal(
+              id,
+              meals[id].name,
+              meals[id].price,
+              meals[id].description
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 }

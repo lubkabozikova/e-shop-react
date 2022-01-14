@@ -1,4 +1,4 @@
-import { useState, useReducer, useContext } from "react";
+import { useState, useReducer } from "react";
 import CartContext from "./cart-context";
 
 const addingTable = { ADD: 1, REMOVE: -1 };
@@ -32,9 +32,9 @@ const orderReducer = (state, action) => {
 };
 
 function CartContextProvider(props) {
-  const initCart = useContext(CartContext);
-  const [count, setCount] = useState(initCart.count);
-  const [order, dispatchOrder] = useReducer(orderReducer, initCart.order);
+  // const initCart = useContext(CartContext);
+  const [count, setCount] = useState(0);
+  const [order, dispatchOrder] = useReducer(orderReducer, {});
 
   const addToCart = (id, amount) => {
     dispatchOrder({ type: "ADD", id: id, amount: amount });
@@ -56,7 +56,6 @@ function CartContextProvider(props) {
       value={{
         count: count,
         order: order,
-        meals: initCart.meals,
         addHandler: addToCart,
         removeHandler: removeFromCart,
         clearCartHandler: clearCart,

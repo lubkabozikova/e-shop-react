@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 
-import styles from "./CartButton.module.css";
+import styles from "./HeaderButton.module.css";
 import CartIcon from "./CartIcon";
 import CartContext from "../../store/cart-context";
 

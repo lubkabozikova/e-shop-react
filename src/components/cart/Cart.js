@@ -1,32 +1,55 @@
-import { Fragment, useContext } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 
-import modalStyles from "./Modal.module.css";
+import Modal from "../../UI/Modal";
+import Button from "../../UI/Button";
 import styles from "./Cart.module.css";
 import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
+import BackendContext from "../../communicationWithBackend/backend-context";
 
 function Cart(props) {
+  const backend = useContext(BackendContext);
+  const [meals, setMeals] = useState({});
+  const [loaded, setLoaded] = useState(false);
+  const [total, setTotal] = useState(0);
   const cart = useContext(CartContext);
-  const meals = cart.meals;
   const order = cart.order;
-  const keys = Object.keys(order);
 
-  let total = 0;
-  for (const id of keys) {
-    total = +total + +meals.price[id] * +order[id];
-  }
+  const loadMeals = useCallback(() => {
+    const load = async () => {
+      const loadedMeals = await backend.getMeals();
+      setMeals(loadedMeals);
+      setLoaded(true);
+    };
+    load();
+  }, [backend]);
+  useEffect(() => loadMeals(), [loadMeals, backend]);
+
+  useEffect(() => {
+    let tempTotal = 0;
+    if (loaded) {
+      Object.keys(order).forEach((id) => {
+        const amount = order.hasOwnProperty(id) ? order[id] : 0;
+        console.log(tempTotal + " + " + amount + " * " + meals[id].price);
+        tempTotal = +tempTotal + +amount * +meals[id].price;
+        console.log(tempTotal);
+      });
+    }
+    setTotal(tempTotal);
+  }, [meals, order, loaded]);
 
   const orderHandler = () => {
     cart.clearCartHandler();
     props.onCartClose();
+    setTotal(0);
   };
 
   const listItem = (id) => {
     return (
       <CartItem
         key={id}
-        name={meals.name[id]}
-        price={meals.price[id]}
+        name={meals[id].name}
+        price={meals[id].price}
         amount={order[id]}
         onRemove={() => {
           cart.removeHandler(id, 1);
@@ -39,24 +62,25 @@ function Cart(props) {
   };
 
   return (
-    <Fragment>
-      <div className={modalStyles.backdrop}></div>
-      <div className={modalStyles.modal}>
-        <ul className={styles.cartItems}>{keys.map((id) => listItem(id))}</ul>
-        <div className={styles.total}>
-          <span>Total Amount</span>
-          <span>${total.toFixed(2)}</span>
-        </div>
-        <div className={styles.actions}>
-          <button onClick={props.onCartClose}>Close</button>
-          {cart.count > 0 && (
-            <button className={styles.order} onClick={orderHandler}>
-              Order
-            </button>
-          )}
-        </div>
+    <Modal>
+      {loaded && (
+        <ul className={styles.cartItems}>
+          {Object.keys(order).map((id) => listItem(id))}
+        </ul>
+      )}
+      <div className={styles.total}>
+        <span>Total Amount</span>
+        <span>${total.toFixed(2)}</span>
       </div>
-    </Fragment>
+      <div className={styles.actions}>
+        <Button onClick={props.onCartClose}>Close</Button>
+        {cart.count > 0 && (
+          <Button className={styles.order} onClick={orderHandler}>
+            Order
+          </Button>
+        )}
+      </div>
+    </Modal>
   );
 }
 

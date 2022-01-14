@@ -1,0 +1,31 @@
+.card {
+  width: 30%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: center;
+}
+
+.form label {
+  font-weight: bold;
+}
+
+.form input {
+  width: 50%;
+  margin: 0 auto;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border-width: 2px;
+  border-color: rgb(200, 200, 200);
+  border-style: solid;
+}
+
+.submit {
+  padding: 1rem 4rem;
+  margin: 3rem auto 1.5rem;
+  background-color: #8a2b06;
+  color: white;
+}
