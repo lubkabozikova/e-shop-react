@@ -17,6 +17,7 @@ function Header(props) {
             <AdminButtons
               onLogOut={props.onLogOut}
               onNewMeal={props.onNewMeal}
+              onOpenOrders={props.onOpenOrders}
             />
           </div>
         )}

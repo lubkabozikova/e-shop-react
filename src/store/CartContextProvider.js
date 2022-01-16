@@ -10,9 +10,9 @@ const orderReducer = (state, action) => {
   }
   // removing the last of one kind
   if (action.type === "REMOVE" && state[action.id] === 1) {
-    delete state[action.id];
+    const { [action.id]: removed, ...newState } = state;
     localStorage.removeItem(action.id);
-    return state;
+    return newState;
   }
   // clearing the entire order
   if (action.type === "CLEAR") {

@@ -26,14 +26,14 @@
   font-size: 1.25rem;
 }
 
-.button {
+.meal .button {
   background-color: #8a2b06;
   color: white;
   margin: auto 0 auto auto;
 }
 
-.button:hover,
-.button:active {
+.meal .button:hover,
+.meal .button:active {
   background-color: #641e03;
   border-color: #641e03;
 }

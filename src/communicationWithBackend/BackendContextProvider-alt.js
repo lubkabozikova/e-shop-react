@@ -1,20 +1,23 @@
+import { useState } from "react";
+
 import BackendContext from "./backend-context";
 import inputMeals from "./dummy_meals";
 
 function BackendContextProvider(props) {
-  const meals = inputMeals;
-  const orders = {};
+  const [meals, setMeals] = useState(inputMeals);
+  const [orders, setOrders] = useState({});
 
   const getMeals = () => {
     return meals;
   };
 
   const addMeal = (meal) => {
-    meals[Math.random()] = meal;
+    setMeals({ ...meals, [Math.random()]: meal });
   };
 
   const removeMeal = (id) => {
-    delete meals[id];
+    const { [id]: removed, ...newMeals } = meals;
+    setMeals(newMeals);
   };
 
   const getOrders = () => {
@@ -22,11 +25,12 @@ function BackendContextProvider(props) {
   };
 
   const addOrder = (order) => {
-    orders[Math.random()] = order;
+    setOrders({ ...orders, [Math.random()]: order });
   };
 
   const removeOrder = (id) => {
-    delete orders[id];
+    const { [id]: removed, ...newOrders } = orders;
+    setOrders(newOrders);
   };
 
   return (

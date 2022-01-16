@@ -37,9 +37,16 @@
   margin: 1rem auto;
 }
 
-.submit {
+.form .submit {
   padding: 1rem 4rem;
   margin: 3rem auto 1.5rem;
   background-color: #8a2b06;
+  color: white;
+}
+
+.form .submit:hover,
+.form .submit:active {
+  background-color: #5a1a01;
+  border-color: #5a1a01;
   color: white;
 }
