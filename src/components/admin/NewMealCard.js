@@ -1,4 +1,4 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useEffect } from "react";
 
 import styles from "./NewMealCard.module.css";
 import Modal from "../../UI/Modal";
@@ -11,6 +11,10 @@ function NewMealCard(props) {
   const description = useRef();
   const dollar = useRef();
   const cent = useRef();
+
+  useEffect(() => {
+    document.getElementById("name").focus();
+  }, []);
 
   const submitHandler = async (event) => {
     event.preventDefault();

@@ -7,10 +7,6 @@ function BackendContextProvider(props) {
   const [meals, setMeals] = useState(inputMeals);
   const [orders, setOrders] = useState({});
 
-  const getMeals = () => {
-    return meals;
-  };
-
   const addMeal = (meal) => {
     setMeals({ ...meals, [Math.random()]: meal });
   };
@@ -18,10 +14,6 @@ function BackendContextProvider(props) {
   const removeMeal = (id) => {
     const { [id]: removed, ...newMeals } = meals;
     setMeals(newMeals);
-  };
-
-  const getOrders = () => {
-    return orders;
   };
 
   const addOrder = (order) => {
@@ -36,11 +28,11 @@ function BackendContextProvider(props) {
   return (
     <BackendContext.Provider
       value={{
+        meals: meals,
         addMeal: addMeal,
-        getMeals: getMeals,
         removeMeal: removeMeal,
+        orders: orders,
         addOrder: addOrder,
-        getOrders: getOrders,
         removeOrder: removeOrder,
       }}
     >

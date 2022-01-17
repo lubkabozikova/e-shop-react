@@ -55,7 +55,7 @@ function App() {
       <MealsList loggedIn={loggedIn} />
       {cartOpen && <Cart onCartClose={toggle.cart} />}
       <div className={styles.admin}>
-        <button onClick={toggle.login}>Admin</button>
+        {!loggedIn && <button onClick={toggle.login}>Admin</button>}
       </div>
       {loginOpen && !loggedIn && (
         <AdminLogin

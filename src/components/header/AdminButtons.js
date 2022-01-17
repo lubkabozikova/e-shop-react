@@ -9,7 +9,8 @@ function AdminButtons(props) {
 
   useEffect(() => {
     const load = async () => {
-      const orders = await backend.getOrders();
+      let orders = {};
+      orders = await backend.orders;
       setCount(Object.keys(orders).length);
     };
     load();

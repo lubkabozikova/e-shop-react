@@ -1,7 +1,12 @@
+import { useCallback, useEffect, useState } from "react";
+
 import BackendContext from "./backend-context";
 import URL from "./URL";
 
 function BackendContextProvider(props) {
+  const [meals, setMeals] = useState({});
+  const [orders, setOrders] = useState({});
+
   const fetchHandler = async (method, items, item) => {
     try {
       let response = null;
@@ -16,7 +21,9 @@ function BackendContextProvider(props) {
         });
       }
       if (method === "DELETE") {
-        response = await fetch(URL + items + "/" + item, { method: "DELETE" });
+        response = await fetch(URL + items + "/" + item + ".json", {
+          method: "DELETE",
+        });
       }
 
       if (!response.ok) {
@@ -29,40 +36,46 @@ function BackendContextProvider(props) {
     } catch (error) {}
   };
 
-  const getMeals = async () => {
+  const getMeals = useCallback(async () => {
     const data = await fetchHandler("GET", "meals", undefined);
-    return data;
-  };
+    data === undefined ? setMeals({}) : setMeals(data);
+  }, []);
 
   const addMeal = async (meal) => {
-    const data = await fetchHandler("POST", "meals", meal);
-    return data;
+    await fetchHandler("POST", "meals", meal);
+    getMeals();
   };
 
-  const removeMeal = (id) => {
-    fetchHandler("DELETE", "meals", id);
+  const removeMeal = async (id) => {
+    await fetchHandler("DELETE", "meals", id);
+    getMeals();
   };
 
-  const getOrders = async () => {
+  const getOrders = useCallback(async () => {
     const data = await fetchHandler("GET", "orders", undefined);
-    return data;
+    data === undefined ? setOrders({}) : setOrders(data);
+  }, []);
+
+  const addOrder = async (order) => {
+    await fetchHandler("POST", "orders", order);
+    getOrders();
   };
 
-  const addOrder = (order) => {
-    fetchHandler("POST", "orders", order);
+  const removeOrder = async (id) => {
+    await fetchHandler("DELETE", "orders", id);
+    getOrders();
   };
 
-  const removeOrder = (id) => {
-    fetchHandler("DELETE", "orders", id);
-  };
+  useEffect(() => getMeals(), [getMeals]);
+  useEffect(() => getOrders(), [getOrders]);
 
   return (
     <BackendContext.Provider
       value={{
-        getMeals: getMeals,
+        meals: meals,
         addMeal: addMeal,
         removeMeal: removeMeal,
-        getOrders: getOrders,
+        orders: orders,
         addOrder: addOrder,
         removeOrder: removeOrder,
       }}

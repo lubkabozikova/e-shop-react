@@ -9,13 +9,15 @@ function OrdersCard(props) {
   const [orders, setOrders] = useState({});
   const backend = useContext(BackendContext);
 
-  useEffect(() => {
-    const load = async () => {
-      const loadedOrders = await backend.getOrders();
-      setOrders(loadedOrders);
-    };
-    load();
-  }, [backend]);
+  // useEffect(() => {
+  //   const load = async () => {
+  //     const loadedOrders = await backend.orders;
+  //     setOrders(loadedOrders);
+  //   };
+  //   load();
+  // }, [backend]);
+
+  useEffect(() => setOrders(backend.orders), [backend.orders]);
 
   const listOrder = (id) => {
     return <li>{id}</li>;

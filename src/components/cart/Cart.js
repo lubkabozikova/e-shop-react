@@ -17,7 +17,7 @@ function Cart(props) {
 
   const loadMeals = useCallback(() => {
     const load = async () => {
-      const loadedMeals = await backend.getMeals();
+      const loadedMeals = await backend.meals;
       setMeals(loadedMeals);
       setLoaded(true);
     };
@@ -39,7 +39,7 @@ function Cart(props) {
   }, [meals, order, loaded]);
 
   const orderHandler = async () => {
-    const response = await backend.addOrder();
+    await backend.addOrder(order);
     cart.clearCartHandler();
     props.onCartClose();
     setTotal(0);

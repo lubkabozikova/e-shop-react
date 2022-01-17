@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 
 import CartContextProvider from "./store/CartContextProvider";
-import BackendContextProvider from "./communicationWithBackend/BackendContextProvider-alt";
+import BackendContextProvider from "./communicationWithBackend/BackendContextProvider";
 
 ReactDOM.render(
   <React.StrictMode>
