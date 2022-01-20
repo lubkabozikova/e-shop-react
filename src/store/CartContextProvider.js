@@ -1,17 +1,26 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import CartContext from "./cart-context";
 
 const addingTable = { ADD: 1, REMOVE: -1 };
 const orderReducer = (state, action) => {
+  //loading previous order from localStorage
+  if (action.type === "START") {
+    let newState = JSON.parse(localStorage.getItem("order")) || {};
+
+    return newState;
+  }
   // adding something that is not there yet
   if (action.type === "ADD" && !state.hasOwnProperty(action.id)) {
-    localStorage.setItem(action.id, action.amount);
-    return { ...state, [action.id]: +action.amount };
+    const newState = { ...state, [action.id]: +action.amount };
+    localStorage.setItem("order", JSON.stringify(newState));
+    return newState;
   }
   // removing the last of one kind
   if (action.type === "REMOVE" && state[action.id] === 1) {
     const { [action.id]: removed, ...newState } = state;
-    localStorage.removeItem(action.id);
+    Object.keys(newState).length > 0
+      ? localStorage.setItem("order", JSON.stringify(newState))
+      : localStorage.removeItem("order");
     return newState;
   }
   // clearing the entire order
@@ -21,20 +30,31 @@ const orderReducer = (state, action) => {
   }
   // adding to existing or removing so that there is still some left
   else {
-    const amount =
+    const newAmount =
       +state[action.id] + +addingTable[action.type] * +action.amount;
-    localStorage.setItem(action.id, amount);
-    return {
-      ...state,
-      [action.id]: amount,
-    };
+    const newState = { ...state, [action.id]: newAmount };
+    localStorage.setItem("order", JSON.stringify(newState));
+    return newState;
   }
 };
 
 function CartContextProvider(props) {
-  // const initCart = useContext(CartContext);
   const [count, setCount] = useState(0);
   const [order, dispatchOrder] = useReducer(orderReducer, {});
+
+  useEffect(() => {
+    dispatchOrder({ type: "START" });
+  }, []);
+
+  useEffect(() => {
+    console.log("effect");
+    let newCount = 0;
+    Object.values(order).forEach((amount) => {
+      newCount = +newCount + +amount;
+    });
+    console.log(newCount);
+    setCount(newCount);
+  }, [order]);
 
   const addToCart = (id, amount) => {
     dispatchOrder({ type: "ADD", id: id, amount: amount });

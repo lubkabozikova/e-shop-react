@@ -8,7 +8,7 @@ function CartButton(props) {
   const cart = useContext(CartContext);
   const [buttonBumping, setButtonBumping] = useState(false);
 
-  const { count } = cart;
+  const count = cart.count;
   useEffect(() => {
     if (count === 0) return;
     setButtonBumping(true);

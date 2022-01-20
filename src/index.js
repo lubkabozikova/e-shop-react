@@ -5,12 +5,15 @@ import App from "./App";
 
 import CartContextProvider from "./store/CartContextProvider";
 import BackendContextProvider from "./communicationWithBackend/BackendContextProvider";
+import AppStateContextProvider from "./store/AppStateContextProvider";
 
 ReactDOM.render(
   <React.StrictMode>
     <CartContextProvider>
       <BackendContextProvider>
-        <App />
+        <AppStateContextProvider>
+          <App />
+        </AppStateContextProvider>
       </BackendContextProvider>
     </CartContextProvider>
   </React.StrictMode>,

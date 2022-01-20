@@ -29,17 +29,15 @@ function Cart(props) {
     let tempTotal = 0;
     if (loaded) {
       Object.keys(order).forEach((id) => {
-        // const amount = order.hasOwnProperty(id) ? order[id] : 0;
-        console.log(tempTotal + " + " + order[id] + " * " + meals[id].price);
         tempTotal = +tempTotal + +order[id] * +meals[id].price;
-        console.log(tempTotal);
       });
     }
     setTotal(tempTotal);
   }, [meals, order, loaded]);
 
-  const orderHandler = async () => {
-    await backend.addOrder(order);
+  const orderHandler = () => {
+    // console.log(order);
+    backend.addOrder({ delivered: false, meals: order });
     cart.clearCartHandler();
     props.onCartClose();
     setTotal(0);

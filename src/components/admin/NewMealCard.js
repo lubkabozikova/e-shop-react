@@ -16,7 +16,7 @@ function NewMealCard(props) {
     document.getElementById("name").focus();
   }, []);
 
-  const submitHandler = async (event) => {
+  const submitHandler = (event) => {
     event.preventDefault();
     const meal = {
       name: name.current.value,
@@ -24,7 +24,7 @@ function NewMealCard(props) {
       description: description.current.value,
     };
     props.onClose();
-    await backend.addMeal(meal);
+    backend.addMeal(meal);
   };
 
   return (

@@ -1,23 +1,28 @@
+import { useContext } from "react";
+
 import styles from "./Header.module.css";
 import MealsImage from "./meals.jpg";
 import DelitiousFood from "./DelitiousFood";
 import CartButton from "./CartButton.js";
 import AdminButtons from "./AdminButtons";
+import AppStateContext from "../../store/app-state-context";
 
 function Header(props) {
+  const appState = useContext(AppStateContext);
+
   return (
     <div>
       <div className={styles.header}>
         <h1>ReactMeals</h1>
-        {!props.loggedIn && (
-          <CartButton onClick={props.onCartOpen}></CartButton>
+        {!appState.loggedIn && (
+          <CartButton onClick={appState.openCart}></CartButton>
         )}
-        {props.loggedIn && (
+        {appState.loggedIn && (
           <div className={styles.adminButtons}>
             <AdminButtons
-              onLogOut={props.onLogOut}
-              onNewMeal={props.onNewMeal}
-              onOpenOrders={props.onOpenOrders}
+              onLogOut={appState.logOut}
+              onNewMeal={appState.openAddNewMeal}
+              onOpenOrders={appState.openOrders}
             />
           </div>
         )}
