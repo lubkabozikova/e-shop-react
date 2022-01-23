@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext } from "react";
 
 import Modal from "../../UI/Modal";
 import Button from "../../UI/Button";
@@ -9,52 +9,30 @@ import BackendContext from "../../communicationWithBackend/backend-context";
 
 function Cart(props) {
   const backend = useContext(BackendContext);
-  const [meals, setMeals] = useState({});
-  const [loaded, setLoaded] = useState(false);
-  const [total, setTotal] = useState(0);
   const cart = useContext(CartContext);
+  const total = cart.total;
   const order = cart.order;
-
-  const loadMeals = useCallback(() => {
-    const load = async () => {
-      const loadedMeals = await backend.meals;
-      setMeals(loadedMeals);
-      setLoaded(true);
-    };
-    load();
-  }, [backend]);
-  useEffect(() => loadMeals(), [loadMeals, backend]);
-
-  useEffect(() => {
-    let tempTotal = 0;
-    if (loaded) {
-      Object.keys(order).forEach((id) => {
-        tempTotal = +tempTotal + +order[id] * +meals[id].price;
-      });
-    }
-    setTotal(tempTotal);
-  }, [meals, order, loaded]);
 
   const orderHandler = () => {
     // console.log(order);
-    backend.addOrder({ delivered: false, meals: order });
-    cart.clearCartHandler();
     props.onCartClose();
-    setTotal(0);
+    props.onCheckOut();
+    // backend.addOrder({ delivered: false, meals: order });
+    // cart.clearCartHandler();
   };
 
   const listItem = (id) => {
     return (
       <CartItem
         key={id}
-        name={meals[id].name}
-        price={meals[id].price}
-        amount={order[id]}
+        name={order[id].name}
+        price={order[id].price}
+        amount={order[id].amount}
         onRemove={() => {
-          cart.removeHandler(id, 1);
+          cart.removeHandler(id, 1, order[id].name, order[id].price);
         }}
         onAdd={() => {
-          cart.addHandler(id, 1);
+          cart.addHandler(id, 1, order[id].name, order[id].price);
         }}
       ></CartItem>
     );
@@ -62,17 +40,17 @@ function Cart(props) {
 
   return (
     <Modal>
-      {loaded && (
-        <ul className={styles.cartItems}>
-          {Object.keys(order).map((id) => listItem(id))}
-        </ul>
-      )}
+      <ul className={styles.cartItems}>
+        {Object.keys(order).map((id) => listItem(id))}
+      </ul>
       <div className={styles.total}>
         <span>Total Amount</span>
         <span>${total.toFixed(2)}</span>
       </div>
       <div className={styles.actions}>
-        <Button onClick={props.onCartClose}>Close</Button>
+        <Button onClick={props.onCartClose} close>
+          Close
+        </Button>
         {cart.count > 0 && (
           <Button className={styles.order} onClick={orderHandler}>
             Order

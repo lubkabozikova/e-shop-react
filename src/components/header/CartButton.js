@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import styles from "./HeaderButton.module.css";
 import CartIcon from "./CartIcon";
 import CartContext from "../../store/cart-context";
+import Button from "../../UI/Button";
 
 function CartButton(props) {
   const cart = useContext(CartContext);
@@ -18,7 +19,8 @@ function CartButton(props) {
   }, [count]);
 
   return (
-    <button
+    <Button
+      header
       className={`${styles.button} ${buttonBumping && styles.bump}`}
       onClick={props.onClick}
     >
@@ -27,7 +29,7 @@ function CartButton(props) {
       </div>
       Your Cart
       <div className={styles.badge}>{count}</div>
-    </button>
+    </Button>
   );
 }
 

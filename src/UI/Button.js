@@ -5,9 +5,12 @@ function Button(props) {
     <button
       type={props.type}
       onClick={props.onClick}
-      className={`${styles.button} ${props.className}`}
+      className={`${styles.button} ${props.className} ${
+        props.close && styles.close
+      } ${props.header && styles.header}`}
+      disabled={!!props.disabled ? true : undefined}
     >
-      {props.children}
+      <div className={styles.content}>{props.children}</div>
     </button>
   );
 }

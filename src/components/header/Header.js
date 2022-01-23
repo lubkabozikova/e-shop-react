@@ -7,7 +7,7 @@ import CartButton from "./CartButton.js";
 import AdminButtons from "./AdminButtons";
 import AppStateContext from "../../store/app-state-context";
 
-function Header(props) {
+function Header() {
   const appState = useContext(AppStateContext);
 
   return (
@@ -23,6 +23,7 @@ function Header(props) {
               onLogOut={appState.logOut}
               onNewMeal={appState.openAddNewMeal}
               onOpenOrders={appState.openOrders}
+              onOpenMeals={appState.openMeals}
             />
           </div>
         )}

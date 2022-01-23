@@ -60,12 +60,18 @@ function NewMealCard(props) {
             ref={cent}
           ></input>
         </div>
-        <Button type="submit" className={styles.submit} onClick={submitHandler}>
-          Add Meal
-        </Button>
-        <Button type="button" onClick={props.onClose}>
-          Close
-        </Button>
+        <div className={styles.buttons}>
+          <Button type="button" onClick={props.onClose} close>
+            Close
+          </Button>
+          <Button
+            type="submit"
+            className={styles.submit}
+            onClick={submitHandler}
+          >
+            Add Meal
+          </Button>
+        </div>
       </form>
     </Modal>
   );

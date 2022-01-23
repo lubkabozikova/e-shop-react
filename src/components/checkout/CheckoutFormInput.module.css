@@ -1,0 +1,33 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 4%;
+  width: 90%;
+}
+
+.input label {
+  text-align: start;
+  padding-left: 1rem;
+  margin: 1rem auto 0.2rem 0;
+  font-weight: bold;
+}
+
+.input input {
+  padding: 0.5rem;
+  border: 1px #ccc solid;
+  border-radius: 2px;
+}
+
+.error label {
+  color: red;
+}
+
+.error input {
+  border-color: red;
+  background-color: rgb(250, 200, 200);
+}
+.error input:focus {
+  outline: none;
+  background-color: rgb(250, 230, 230);
+}

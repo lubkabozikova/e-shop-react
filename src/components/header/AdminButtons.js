@@ -2,6 +2,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 
 import BackendContext from "../../communicationWithBackend/backend-context";
 import styles from "./HeaderButton.module.css";
+import Button from "../../UI/Button";
 
 function AdminButtons(props) {
   const backend = useContext(BackendContext);
@@ -18,15 +19,18 @@ function AdminButtons(props) {
 
   return (
     <Fragment>
-      <button className={styles.button} onClick={props.onOpenOrders}>
+      <Button header className={styles.button} onClick={props.onOpenOrders}>
         Orders <div className={styles.badge}>{count}</div>
-      </button>
-      <button className={styles.button} onClick={props.onNewMeal}>
+      </Button>
+      <Button header className={styles.button} onClick={props.onOpenMeals}>
+        Meals
+      </Button>
+      <Button header className={styles.button} onClick={props.onNewMeal}>
         New Meal
-      </button>
-      <button className={styles.button} onClick={props.onLogOut}>
+      </Button>
+      <Button header className={styles.button} onClick={props.onLogOut}>
         Log Out
-      </button>
+      </Button>
     </Fragment>
   );
 }

@@ -1,0 +1,24 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form h2 {
+  color: #8a2b06;
+}
+
+.form .shortInputs {
+  display: inline-flex;
+  margin: 0;
+  padding: 0 2% 0 0;
+}
+
+.form .button {
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 800px) {
+  .form {
+    flex-direction: column;
+  }
+}

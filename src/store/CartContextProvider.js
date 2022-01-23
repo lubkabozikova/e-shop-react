@@ -11,12 +11,19 @@ const orderReducer = (state, action) => {
   }
   // adding something that is not there yet
   if (action.type === "ADD" && !state.hasOwnProperty(action.id)) {
-    const newState = { ...state, [action.id]: +action.amount };
+    const newState = {
+      ...state,
+      [action.id]: {
+        name: action.name,
+        price: action.price,
+        amount: +action.amount,
+      },
+    };
     localStorage.setItem("order", JSON.stringify(newState));
     return newState;
   }
   // removing the last of one kind
-  if (action.type === "REMOVE" && state[action.id] === 1) {
+  if (action.type === "REMOVE" && state[action.id].amount === 1) {
     const { [action.id]: removed, ...newState } = state;
     Object.keys(newState).length > 0
       ? localStorage.setItem("order", JSON.stringify(newState))
@@ -31,8 +38,11 @@ const orderReducer = (state, action) => {
   // adding to existing or removing so that there is still some left
   else {
     const newAmount =
-      +state[action.id] + +addingTable[action.type] * +action.amount;
-    const newState = { ...state, [action.id]: newAmount };
+      +state[action.id].amount + +addingTable[action.type] * +action.amount;
+    const newState = {
+      ...state,
+      [action.id]: { ...state[action.id], amount: newAmount },
+    };
     localStorage.setItem("order", JSON.stringify(newState));
     return newState;
   }
@@ -40,34 +50,49 @@ const orderReducer = (state, action) => {
 
 function CartContextProvider(props) {
   const [count, setCount] = useState(0);
+  const [total, setTotal] = useState(0);
   const [order, dispatchOrder] = useReducer(orderReducer, {});
 
-  useEffect(() => {
-    dispatchOrder({ type: "START" });
-  }, []);
+  useEffect(() => dispatchOrder({ type: "START" }), []);
 
   useEffect(() => {
-    console.log("effect");
     let newCount = 0;
-    Object.values(order).forEach((amount) => {
-      newCount = +newCount + +amount;
+    let newTotal = 0;
+    Object.keys(order).forEach((mealId) => {
+      newCount = +newCount + +order[mealId].amount;
+      newTotal = +newTotal + +order[mealId].price * +order[mealId].amount;
     });
-    console.log(newCount);
     setCount(newCount);
+    setTotal(newTotal);
   }, [order]);
 
-  const addToCart = (id, amount) => {
-    dispatchOrder({ type: "ADD", id: id, amount: amount });
+  const addToCart = (id, amount, name, price) => {
+    dispatchOrder({
+      type: "ADD",
+      id: id,
+      amount: amount,
+      name: name,
+      price: price,
+    });
     setCount((prevCount) => +prevCount + +amount);
+    setTotal((prevTotal) => +prevTotal + +amount * +price);
   };
 
-  const removeFromCart = (id, amount) => {
-    dispatchOrder({ type: "REMOVE", id: id, amount: amount });
+  const removeFromCart = (id, amount, name, price) => {
+    dispatchOrder({
+      type: "REMOVE",
+      id: id,
+      amount: amount,
+      name: name,
+      price: price,
+    });
     setCount((prevCount) => +prevCount - +amount);
+    setTotal((prevTotal) => +prevTotal - +amount * +price);
   };
 
   const clearCart = () => {
     setCount(0);
+    setTotal(0);
     dispatchOrder({ type: "CLEAR" });
   };
 
@@ -76,6 +101,7 @@ function CartContextProvider(props) {
       value={{
         count: count,
         order: order,
+        total: total,
         addHandler: addToCart,
         removeHandler: removeFromCart,
         clearCartHandler: clearCart,

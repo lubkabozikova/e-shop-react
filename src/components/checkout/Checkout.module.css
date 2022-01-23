@@ -1,0 +1,60 @@
+.checkout {
+  display: flex;
+  flex-direction: row;
+}
+
+.checkout .column {
+  width: 50%;
+  padding: 1rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout .column button {
+  margin: 3rem auto auto;
+}
+
+.summary h2 {
+  color: #8a2b06;
+}
+
+.summary h3 {
+  color: #8a2b06;
+  border-bottom: #8a2b06 solid 2px;
+  padding-bottom: 2rem;
+  margin: 1rem 5rem 0rem;
+}
+
+.summary ul {
+  padding: 0;
+}
+
+.summary li {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  justify-content: space-between;
+  border-bottom: 1px #ccc solid;
+  margin: 0 3rem;
+}
+
+.summary div {
+  padding: 0.2rem;
+}
+
+.summary .amount {
+  border-radius: 3px;
+  width: 3rem;
+  color: #8a2b06;
+  font-weight: bold;
+}
+
+.summary .name {
+  font-weight: bold;
+}
+
+.summary .price {
+  font-style: italic;
+  color: #8a2b06;
+  width: 5rem;
+}

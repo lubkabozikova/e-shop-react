@@ -5,23 +5,23 @@ import inputMeals from "./dummy_meals";
 
 function BackendContextProvider(props) {
   const [meals, setMeals] = useState(inputMeals);
-  const [orders, setOrders] = useState({});
+  const [orders, setOrders] = useState([]);
 
   const addMeal = (meal) => {
-    setMeals({ ...meals, [Math.random()]: meal });
+    setMeals([...meals, { ...meal, id: [Math.random()] }]);
   };
 
   const removeMeal = (id) => {
-    const { [id]: removed, ...newMeals } = meals;
+    const newMeals = meals.filter((meal) => meal.id !== id);
     setMeals(newMeals);
   };
 
   const addOrder = (order) => {
-    setOrders({ ...orders, [Math.random()]: order });
+    setOrders([...orders, { ...order, id: [Math.random()] }]);
   };
 
   const removeOrder = (id) => {
-    const { [id]: removed, ...newOrders } = orders;
+    const newOrders = orders.filter((order) => order.id !== id);
     setOrders(newOrders);
   };
 

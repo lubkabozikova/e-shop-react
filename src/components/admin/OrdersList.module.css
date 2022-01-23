@@ -1,0 +1,28 @@
+.meal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.meal ul {
+  padding: 0;
+}
+
+.meal ul .mealItem {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: start;
+  display: flex;
+}
+
+.mealItem .amount {
+  margin-right: 0.7rem;
+  color: #8a2b06;
+  font-weight: bold;
+}
+
+.meal button {
+  margin: auto 0 auto auto;
+}

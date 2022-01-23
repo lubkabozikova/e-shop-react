@@ -1,49 +1,43 @@
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import classes from "./Meals.module.css";
 import BackendContext from "../../communicationWithBackend/backend-context";
-import MealItem from "./MealItem";
+import MainList from "../../UI/MainList";
+import styles from "./Meals.module.css";
+import Button from "../../UI/Button";
+import MealForm from "./MealForm";
 
 function MealsList(props) {
   const backend = useContext(BackendContext);
-  const [meals, setMeals] = useState({});
-
+  const [meals, setMeals] = useState([]);
   useEffect(() => setMeals(backend.meals), [backend.meals]);
 
-  const removeMealHandler = (id) => {
-    backend.removeMeal(id);
-  };
+  const mealItems = meals.map((meal) => {
+    return {
+      id: meal.id,
+      item: (
+        <div className={styles.meal}>
+          <div>
+            <h3>{meal.name}</h3>
+            <p className={styles.description}>{meal.description}</p>
+            <p className={styles.price}>${meal.price.toFixed(2)}</p>
+          </div>
+          {!props.loggedIn && (
+            <MealForm id={meal.id} name={meal.name} price={meal.price} />
+          )}
+          {props.loggedIn && (
+            <Button
+              className={styles.button}
+              onClick={() => backend.removeMeal(meal.id)}
+            >
+              Remove
+            </Button>
+          )}
+        </div>
+      ),
+    };
+  });
 
-  const listMeal = (id, name, price, description) => {
-    return (
-      <MealItem
-        key={id}
-        id={id}
-        name={name}
-        price={price}
-        description={description}
-        loggedIn={props.loggedIn}
-        onRemove={removeMealHandler}
-      >
-        {name}
-      </MealItem>
-    );
-  };
-
-  return (
-    <div className={classes.meals}>
-      <ul>
-        {Object.keys(meals).map((id) => {
-          return listMeal(
-            id,
-            meals[id].name,
-            meals[id].price,
-            meals[id].description
-          );
-        })}
-      </ul>
-    </div>
-  );
+  return <MainList items={mealItems} />;
 }
 
 export default MealsList;

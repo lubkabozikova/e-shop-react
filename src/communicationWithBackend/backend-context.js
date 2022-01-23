@@ -1,10 +1,10 @@
 import { createContext } from "react";
 
 const BackendContext = createContext({
-  meals: {},
+  meals: [],
   addMeal: () => {},
   removeMeal: () => {},
-  orders: {},
+  orders: [],
   addOrder: () => {},
   removeOrder: () => {},
 });
